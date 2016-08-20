@@ -1,0 +1,21 @@
+﻿  SolarSystem.cpp
+  Main.cpp
+c:\users\heavensgate\desktop\homework\graphics\introtoopengl\main.cpp(92): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\heavensgate\desktop\homework\graphics\introtoopengl\main.cpp(93): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\heavensgate\desktop\homework\graphics\introtoopengl\main.cpp(95): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\heavensgate\desktop\homework\graphics\introtoopengl\main.cpp(96): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Gizmos.cpp
+  Generating Code...
+  gl_core_4_4.c
+Main.obj : error LNK2019: unresolved external symbol glfwInit referenced in function main
+Main.obj : error LNK2019: unresolved external symbol glfwTerminate referenced in function main
+Main.obj : error LNK2019: unresolved external symbol glfwCreateWindow referenced in function main
+Main.obj : error LNK2019: unresolved external symbol glfwDestroyWindow referenced in function main
+Main.obj : error LNK2019: unresolved external symbol glfwWindowShouldClose referenced in function main
+Main.obj : error LNK2019: unresolved external symbol glfwPollEvents referenced in function main
+Main.obj : error LNK2019: unresolved external symbol glfwGetKey referenced in function main
+Main.obj : error LNK2019: unresolved external symbol glfwGetTime referenced in function main
+Main.obj : error LNK2019: unresolved external symbol glfwMakeContextCurrent referenced in function main
+Main.obj : error LNK2019: unresolved external symbol glfwSwapBuffers referenced in function main
+C:\Users\HeavensGate\Desktop\Homework\Graphics\deps\glfw\lib\glfw3.lib : warning LNK4272: library machine type 'X86' conflicts with target machine type 'x64'
+C:\Users\HeavensGate\Desktop\Homework\Graphics\x64\Debug\IntroToOpenGL.exe : fatal error LNK1120: 10 unresolved externals
