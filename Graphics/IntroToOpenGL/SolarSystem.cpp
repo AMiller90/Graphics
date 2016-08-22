@@ -135,17 +135,17 @@ void SolarSystem::Draw()
 	vec4 red(255, 0, 0, 1);
 	vec4 purple(128, 0, 128, 1);
 
-	Gizmos::addLine(vec3(moon[3][0], moon[3][1], moon[3][2]), vec3(earth[3][0], earth[3][1], earth[3][2]), red);
-	Gizmos::addLine(vec3(earth[3][0], earth[3][1], earth[3][2]), vec3(sun[3][0], sun[3][1], sun[3][2]), blue);
+	Gizmos::addLine(vec3(moon[3]), vec3(earth[3]), red);
+	Gizmos::addLine(vec3(earth[3]), vec3(sun[3]), blue);
 
-	Gizmos::addLine(vec3(sun[3][0], sun[3][1], sun[3][2]), vec3(mars[3][0], mars[3][1], mars[3][2]), black);
-	Gizmos::addLine(vec3(sun[3][0], sun[3][1], sun[3][2]), vec3(pluto[3][0], pluto[3][1], pluto[3][2]), purple);
+	Gizmos::addLine(vec3(sun[3]), vec3(mars[3]), black);
+	Gizmos::addLine(vec3(sun[3]), vec3(pluto[3]), purple);
 
-	Gizmos::addSphere(vec3(sun[3][0], sun[3][1], sun[3][2]), 1, 10, 10, orange, nullptr, 0.0f, 360.0f, -90.0f, 90.0f);
-	Gizmos::addSphere(vec3(earth[3][0], earth[3][1], earth[3][2]), 0.75f, 10, 10, blue, nullptr, 0.0f, 360.0f, -90.0f, 90.0f);
-	Gizmos::addSphere(vec3(moon[3][0], moon[3][1], moon[3][2]), 0.5f, 10, 10, red, nullptr, 0.0f, 360.0f, -90.0f, 90.0f);
-	Gizmos::addSphere(vec3(mars[3][0], mars[3][1], mars[3][2]), 1, 10, 10, black, nullptr, 0.0f, 360.0f, -90.0f, 90.0f);
-	Gizmos::addSphere(vec3(pluto[3][0], pluto[3][1], pluto[3][2]), 0.75f, 10, 10, purple, nullptr, 0.0f, 360.0f, -90.0f, 90.0f);
+	Gizmos::addSphere(vec3(sun[3]), 1, 10, 10, orange, nullptr, 0.0f, 360.0f, -90.0f, 90.0f);
+	Gizmos::addSphere(vec3(earth[3]), 0.75f, 10, 10, blue, nullptr, 0.0f, 360.0f, -90.0f, 90.0f);
+	Gizmos::addSphere(vec3(moon[3]), 0.5f, 10, 10, red, nullptr, 0.0f, 360.0f, -90.0f, 90.0f);
+	Gizmos::addSphere(vec3(mars[3]), 1, 10, 10, black, nullptr, 0.0f, 360.0f, -90.0f, 90.0f);
+	Gizmos::addSphere(vec3(pluto[3]), 0.75f, 10, 10, purple, nullptr, 0.0f, 360.0f, -90.0f, 90.0f);
 
 	Gizmos::draw(projection * view);
 
