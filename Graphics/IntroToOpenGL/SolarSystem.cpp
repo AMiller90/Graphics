@@ -3,6 +3,8 @@
 
 bool SolarSystem::Create()
 {
+	float time = (float)glfwGetTime();
+
 	if (glfwInit() == false)
 		return false;
 
@@ -30,6 +32,10 @@ bool SolarSystem::Create()
 	projection = glm::perspective(glm::pi<float>() * 0.35f,
 		16 / 9.f, 0.1f, 1000.f);
 
+
+	mat4 worldspacecamera = glm::inverse(view);
+
+	worldspacecamera = glm::translate(vec3(10, 10, 10)) * time;
 
 	glClearColor(0.25f, 0.25f, 0.25f, 1);
 	glEnable(GL_DEPTH_TEST); // enables the depth buffer
