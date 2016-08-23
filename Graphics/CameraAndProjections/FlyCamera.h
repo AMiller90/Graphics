@@ -11,10 +11,8 @@ public:
 	void setSpeed(float speed);
 
 private:
-	mat4 cameraMove;
 	float speed;
 	vec3 up;
-	float inc;
 };
 
 #endif

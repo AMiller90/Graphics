@@ -13,6 +13,50 @@ using glm::mat4;
 using glm::vec3;
 using glm::vec4;
 
+bool firstMouse = true;
+float pitch = 0.0f;
+float yaw = -90.0f;
+glm::vec3 cameraPos = glm::vec3(10.0f, 10.0f, 10.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	float lastX = 1080 / 2;
+	float lastY = 720 / 2;
+
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to left
+	lastX = xpos;
+	lastY = ypos;
+
+	float sensitivity = 0.005;	// Change this value to your liking
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	// Make sure that when pitch is out of bounds, screen doesn't get flipped
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 front;
+	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.y = sin(glm::radians(pitch));
+	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraFront = glm::normalize(front);
+}
+
 bool Create()
 {
 	if (glfwInit() == false)
@@ -39,7 +83,10 @@ bool Create()
 
 	Gizmos::create();
 
-	float currentTime = (float)glfwGetTime();
+	float deltaTime = (float)glfwGetTime();
+
+	glfwSetCursorPosCallback(window, mouse_callback);
+
 
 	glClearColor(0.25f, 0.25f, 0.25f, 1);
 	glEnable(GL_DEPTH_TEST); // enables the depth buffer
@@ -68,16 +115,18 @@ bool Create()
 				i == 10 ? white : black);
 		}
 
+		//// Camera/View transformation
+		//glm::mat4 view;
+		//view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		//// Projection 
+		//glm::mat4 projection;
+		//projection = glm::perspective(45.0f, (float)1080 / 720, 0.1f, 100.0f);
 
-		vec4 orange(255, 128, 0, 1);
-		vec4 blue(0, 0, 255, 1);
-		vec4 red(255, 0, 0, 1);
-		vec4 purple(128, 0, 128, 1);
+		myCamera->update(deltaTime);
 
+		//Gizmos::draw(projection * view);
 
-		myCamera->update(currentTime);
-
-		Gizmos::draw(myCamera->getProjection() * myCamera->getView());
+		Gizmos::draw(myCamera->getProjectionView());
 
 		//This updates the monitors display but swapping the rendered back buffer.If we did not call this then we wouldn’t be able to see
 		//anything rendered by us with OpenGL.

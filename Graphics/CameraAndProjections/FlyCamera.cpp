@@ -2,36 +2,33 @@
 
 FlyCamera::FlyCamera()
 {
-	cameraMove = mat4(1);
-	inc = 0;
+	up = vec3(0, 1, 0);
+	setLookAt(vec3(10, 10, 10), vec3(0), up);
+	setPerspective(glm::pi<float>() * 0.35f, 16 / 9.f, 0.1f, 1000.f);
+
+
 }
 
 void FlyCamera::update(float deltaTime)
 {
+	GLFWwindow* window = glfwGetCurrentContext();
 
-	//int key = 0;
- //  
-	//switch (key)
-	//{
-	//case GLFW_KEY_W:
-	//	inc += 1;
-	//	cameraMove = glm::translate(vec3(0, inc, 0));
-	//	getWorldTransform() * cameraMove;
-	//	printf("inc %f: \n", inc);
-	//	break;
-	//case GLFW_KEY_A:
-	//	getWorldTransform();
-	//	break;
-	//case GLFW_KEY_S:
-	//	getWorldTransform();
-	//	break;
-	//case GLFW_KEY_D:
-	//	getWorldTransform();
-	//	break;
-
-	//default:
-	//	break;
-	//}
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+	    viewTransform *= glm::inverse(glm::translate(vec3(0, 0, (-0.10f * deltaTime) * 10)));
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		viewTransform *= glm::inverse(glm::translate(vec3((-0.10f * deltaTime) * 10, 0, 0)));
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+		viewTransform *= glm::inverse(glm::translate(vec3(0, 0, (0.10f * deltaTime) * 10)));
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
+		viewTransform *= glm::inverse(glm::translate(vec3((0.10f * deltaTime) * 10, 0, 0)));
+	}
 
 	updateProjectionViewTransform();
 }
