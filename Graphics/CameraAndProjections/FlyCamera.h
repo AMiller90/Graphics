@@ -9,11 +9,10 @@ public:
 	FlyCamera();
 	void update(float deltaTime);
 	void setSpeed(float speed);
-	vec3 cameraFront;
 private:
 	float speed;
 	vec3 up;
-	vec3 cameraPos;
-	
+	double lastX;
+	double lastY;
 };
 #endif
