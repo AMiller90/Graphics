@@ -18,6 +18,11 @@ void FlyCamera::update(float deltaTime)
 	mat4 camRot = mat4(1);
 	mat4 camScale = mat4(1);
 
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT))
+	{
+		viewTransform = glm::lookAt(cameraPos, cameraPos + cameraFront, up);
+	}
+
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
 		camTrans = glm::translate(vec3(0, 0, (-0.10f * deltaTime) * 10));

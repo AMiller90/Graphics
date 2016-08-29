@@ -6,7 +6,5 @@ c:\users\andrew.miller.aie\desktop\graphics\graphics\cameraandprojections\main.c
 c:\users\andrew.miller.aie\desktop\graphics\graphics\cameraandprojections\main.cpp(37): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\andrew.miller.aie\desktop\graphics\graphics\cameraandprojections\main.cpp(38): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\andrew.miller.aie\desktop\graphics\graphics\cameraandprojections\main.cpp(40): warning C4305: 'initializing': truncation from 'double' to 'float'
-  FlyCamera.cpp
-  Generating Code...
   CameraAndProjections.vcxproj -> C:\Users\andrew.miller.AIE\Desktop\Graphics\Graphics\Debug\CameraAndProjections.exe
   CameraAndProjections.vcxproj -> C:\Users\andrew.miller.AIE\Desktop\Graphics\Graphics\Debug\CameraAndProjections.pdb (Partial PDB)

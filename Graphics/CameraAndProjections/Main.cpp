@@ -13,49 +13,49 @@ using glm::mat4;
 using glm::vec3;
 using glm::vec4;
 
-//bool firstMouse = true;
-//float pitch = 0.0f;
-//float yaw = -90.0f;
-//glm::vec3 cameraPos = glm::vec3(10.0f, 10.0f, 10.0f);
-//glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-//glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-//
-//void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-//{
-//	float lastX = 1080 / 2;
-//	float lastY = 720 / 2;
-//
-//	if (firstMouse)
-//	{
-//		lastX = xpos;
-//		lastY = ypos;
-//		firstMouse = false;
-//	}
-//
-//	float xoffset = xpos - lastX;
-//	float yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to left
-//	lastX = xpos;
-//	lastY = ypos;
-//
-//	float sensitivity = 0.005;	// Change this value to your liking
-//	xoffset *= sensitivity;
-//	yoffset *= sensitivity;
-//
-//	yaw += xoffset;
-//	pitch += yoffset;
-//
-//	// Make sure that when pitch is out of bounds, screen doesn't get flipped
-//	if (pitch > 89.0f)
-//		pitch = 89.0f;
-//	if (pitch < -89.0f)
-//		pitch = -89.0f;
-//
-//	glm::vec3 front;
-//	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-//	front.y = sin(glm::radians(pitch));
-//	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-//	cameraFront = glm::normalize(front);
-//}
+bool firstMouse = true;
+float pitch = 0.0f;
+float yaw = -90.0f;
+glm::vec3 cameraPos = glm::vec3(10.0f, 10.0f, 10.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	float lastX = 1080 / 2;
+	float lastY = 720 / 2;
+
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to left
+	lastX = xpos;
+	lastY = ypos;
+
+	float sensitivity = 0.005;	// Change this value to your liking
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	// Make sure that when pitch is out of bounds, screen doesn't get flipped
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 front;
+	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.y = sin(glm::radians(pitch));
+	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraFront = glm::normalize(front);
+}
 
 bool Create()
 {
@@ -84,7 +84,7 @@ bool Create()
 
 	float deltaTime = (float)glfwGetTime();
 
-	//glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
 
 
 	glClearColor(0.25f, 0.25f, 0.25f, 1);
@@ -113,6 +113,9 @@ bool Create()
 				vec3(-10, 0, -10 + i),
 				i == 10 ? white : black);
 		}
+
+
+		myCamera->cameraFront = cameraFront;
 
 		/* Camera/View transformation
 		glm::mat4 view;
