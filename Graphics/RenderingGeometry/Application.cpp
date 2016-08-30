@@ -34,7 +34,7 @@ bool Application::startUp()
 {
 	// create vertex and index data for a quad
 	Vertex vertices[4];
-	unsigned int indices[6] = { 2, 1, 0, 2, 3, 1 };
+	unsigned int indices[4] = { 0,1,2,3};
 
 	vertices[0].position = vec4(-5, 0, -5, 1);
 	vertices[1].position = vec4(5, 0, -5, 1);
@@ -65,12 +65,12 @@ bool Application::startUp()
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		(void*)(sizeof(vec4)));
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 *
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 *
 		sizeof(unsigned int), indices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 	//...
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -143,7 +143,6 @@ void Application::Draw()
 
 	glUseProgram(m_programID);
 
-	generateGrid(0, 0);
 
 	unsigned int projectionViewUniform = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
 
@@ -151,9 +150,8 @@ void Application::Draw()
 
 	glBindVertexArray(m_VAO);
 
-	unsigned int indexCount = 6;
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0); //jesusGL take the wheel this goes up to opengl
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0); //jesusGL take the wheel this goes up to opengl
 
 	//This updates the monitors display but swapping the rendered back buffer.If we did not call this then we wouldn’t be able to see
 	//anything rendered by us with OpenGL.
@@ -167,51 +165,3 @@ void Application::Destroy()
 	glfwTerminate();
 }
 
-// function to create a grid
-void Application::generateGrid(unsigned int rows, unsigned int cols) {
-
-    // create vertex and index data for a quad
-	Vertex vertices[4];
-	unsigned int indices[6] = { 2, 1, 0, 2, 3, 1 };
-
-	vertices[0].position = vec4(-5, 0, -5, 1);
-	vertices[1].position = vec4(5, 0, -5, 1);
-	vertices[2].position = vec4(-5, 0, 5, 1);
-	vertices[3].position = vec4(5, 0, 5, 1);
-
-	vertices[0].colour = vec4(1, 0, 0, 1);
-	vertices[1].colour = vec4(0, 1, 0, 1);
-	vertices[2].colour = vec4(0, 0, 1, 1);
-	vertices[3].colour = vec4(1, 1, 1, 1);
-
-	// create and bind buffers to a vertex array object
-	glGenBuffers(1, &m_VBO);
-	glGenBuffers(1, &m_IBO);
-
-	//Add the following line to generate a VertexArrayObject
-	glGenVertexArrays(1, &m_VAO);
-
-	glBindVertexArray(m_VAO);
-
-	// ....Code Segment here to bind and fill VBO + IBO
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex),
-		vertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		(void*)(sizeof(vec4)));
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 *
-		sizeof(unsigned int), indices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	//...
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-
-}

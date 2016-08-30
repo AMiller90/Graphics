@@ -1,6 +1,1 @@
-﻿  SolarSystem.cpp
-  Main.cpp
-  Generating Code...
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  IntroToOpenGL.vcxproj -> C:\Users\andrew.miller.AIE\Desktop\Graphics\Graphics\Debug\IntroToOpenGL.exe
-  IntroToOpenGL.vcxproj -> C:\Users\andrew.miller.AIE\Desktop\Graphics\Graphics\Debug\IntroToOpenGL.pdb (Partial PDB)
+﻿

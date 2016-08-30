@@ -3,7 +3,8 @@
 #include "Application.h"
 
 int main()
-{	Application* app = new Application();
+{
+	Application* app = new Application();
 
 	if (app->startUp() == true)
 	{
