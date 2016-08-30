@@ -14,5 +14,6 @@ private:
 	vec3 up;
 	double lastX;
 	double lastY;
+	bool firstMouseClick;
 };
 #endif

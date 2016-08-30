@@ -11,6 +11,7 @@ class SolarSystem : public Application
 {
 
 public:
+	SolarSystem();
 	bool Create();
 	void Destroy();
 	bool Update();

@@ -1,5 +1,6 @@
 #include "FlyCamera.h"
 #include<iostream>
+
 FlyCamera::FlyCamera()
 {
 	up = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -8,10 +9,8 @@ FlyCamera::FlyCamera()
 	setPerspective(glm::pi<float>() * 0.35f, 16 / 9.f, 0.1f, 1000.f);
 	lastX = 0;
 	lastY = 0;
-	
+	firstMouseClick = true;
 }
-
-bool firstMouse = true;
 
 void FlyCamera::update(float deltaTime)
 {
@@ -34,11 +33,12 @@ void FlyCamera::update(float deltaTime)
 		//Get the mouse coordinates
 		glfwGetCursorPos(window, &xpos, &ypos);
 
-		if (firstMouse) // this bool variable is initially set to true
+		//This helps with preventing snapping 
+		if (firstMouseClick)
 		{
 			lastX = xpos;
 			lastY = ypos;
-			firstMouse = false;
+			firstMouseClick = false;
 		}
 
 		//Get the offsets

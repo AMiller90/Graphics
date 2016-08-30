@@ -5,7 +5,7 @@
 int main()
 {
 	
-	SolarSystem* solarsystem = new SolarSystem;
+	Application* solarsystem = new SolarSystem();
 
 	if(solarsystem->Create() == true)
 	{

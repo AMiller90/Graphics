@@ -1,5 +1,4 @@
-﻿  FlyCamera.cpp
-c:\users\andrew.miller.aie\desktop\graphics\graphics\cameraandprojections\flycamera.cpp(45): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\andrew.miller.aie\desktop\graphics\graphics\cameraandprojections\flycamera.cpp(46): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+﻿  Main.cpp
+c:\users\andrew.miller.aie\desktop\graphics\graphics\cameraandprojections\main.cpp(45): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   CameraAndProjections.vcxproj -> C:\Users\andrew.miller.AIE\Desktop\Graphics\Graphics\Debug\CameraAndProjections.exe
   CameraAndProjections.vcxproj -> C:\Users\andrew.miller.AIE\Desktop\Graphics\Graphics\Debug\CameraAndProjections.pdb (Partial PDB)

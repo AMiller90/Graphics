@@ -1,6 +1,10 @@
 #include "SolarSystem.h"
 #include<iostream>
 
+SolarSystem::SolarSystem()
+{
+}
+
 bool SolarSystem::Create()
 {
 	float time = (float)glfwGetTime();
