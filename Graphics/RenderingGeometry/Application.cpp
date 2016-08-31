@@ -6,6 +6,7 @@ Application::Application()
 
     glfwInit();
 
+	// create a basic window
 	window = glfwCreateWindow(1080, 720, "Window", nullptr, nullptr);
 
 	if (window == nullptr)
@@ -20,10 +21,12 @@ Application::Application()
 		glfwTerminate();
 	}
 
+	//Create the view matrix
 	glm::mat4 view = glm::lookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
 	glm::mat4 projection = glm::perspective(glm::pi<float>() * 0.35f,
 		16 / 9.f, 0.1f, 1000.f);
 
+	//Set matrix
 	m_projectionViewMatrix = projection * view;
 
 	glClearColor(0.25f, 0.25f, 0.25f, 1);
@@ -46,35 +49,41 @@ bool Application::startUp()
 	vertices[2].colour = vec4(0, 0, 1, 1);
 	vertices[3].colour = vec4(1, 1, 1, 1);
 
-	// create and bind buffers to a vertex array object
+	// create opengl data
+
+	// generate buffers
 	glGenBuffers(1, &m_VBO);
 	glGenBuffers(1, &m_IBO);
 
-	//Add the following line to generate a VertexArrayObject
+	// generate vertex array object (descriptors)
 	glGenVertexArrays(1, &m_VAO);
 
+	// all changes will apply to this handle
 	glBindVertexArray(m_VAO);
 
-	// ....Code Segment here to bind and fill VBO + IBO
+	// set vertex buffer data
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex),
 		vertices, GL_STATIC_DRAW);
 
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		(void*)(sizeof(vec4)));
-
-
+	// index data
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 *
 		sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
-	//...
+	// position
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+
+	// colour
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(vec4)));
+
+	// safety
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 
 	//Create Shaders
 	const char* vsSource = "#version 410\n \
@@ -94,6 +103,7 @@ bool Application::startUp()
 	int success = GL_FALSE;
 	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
 	glShaderSource(vertexShader, 1, (const char**)&vsSource, 0);
 	glCompileShader(vertexShader);
 	glShaderSource(fragmentShader, 1, (const char**)&fsSource, 0);
@@ -105,7 +115,7 @@ bool Application::startUp()
 	glAttachShader(m_programID, fragmentShader);
 	glLinkProgram(m_programID);
 
-
+	// check that it compiled and linked correctly
 	glGetProgramiv(m_programID, GL_LINK_STATUS, &success);
 	if (success == GL_FALSE) {
 		int infoLogLength = 0;
@@ -117,6 +127,7 @@ bool Application::startUp()
 		delete[] infoLog;
 	}
 
+	// we don't need to keep the individual shaders around
 	glDeleteShader(fragmentShader);
 	glDeleteShader(vertexShader);
 
@@ -141,16 +152,17 @@ void Application::Draw()
 	OpenGL may think the image of the last frame is still there and our new visuals may not display.*/
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// bind shader
 	glUseProgram(m_programID);
 
-
+	// where to send the matrix
 	unsigned int projectionViewUniform = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
 
+	// send the matrix
 	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix));
 
+	// draw quad
 	glBindVertexArray(m_VAO);
-
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0); //jesusGL take the wheel this goes up to opengl
 
 	//This updates the monitors display but swapping the rendered back buffer.If we did not call this then we wouldn’t be able to see
@@ -161,6 +173,12 @@ void Application::Draw()
 
 void Application::Destroy()
 {
+	// cleanup render data
+	glDeleteProgram(m_programID);
+	glDeleteVertexArrays(1, &m_VAO);
+	glDeleteBuffers(1, &m_VBO);
+	glDeleteBuffers(1, &m_IBO);
+
 	glfwDestroyWindow(window);
 	glfwTerminate();
 }
