@@ -1,19 +1,20 @@
 #define GLM_FORCE_PURE
 #include<iostream>
 #include "Application.h"
+#include "RenderGeometry.h"
 
 int main()
 {
-	Application* app = new Application();
+	Application* renderGeometry = new RenderGeometry();
 
-	if (app->startUp() == true)
+	if (renderGeometry->startUp() == true)
 	{
-		while (app->update() == true)
-			app->Draw();
-		app->Destroy();
+		while (renderGeometry->update() == true)
+			renderGeometry->Draw();
+		renderGeometry->Destroy();
 	}
 
-	delete app;
+	delete renderGeometry;
 	return 0;
 
 }
