@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "RenderGeometry.h"
 
+
 int main()
 {
 	Application* renderGeometry = new RenderGeometry();

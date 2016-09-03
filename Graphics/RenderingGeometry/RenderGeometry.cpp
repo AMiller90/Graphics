@@ -6,7 +6,7 @@ RenderGeometry::RenderGeometry()
 	CreateDirectory("Shaders/", NULL);
 
 	//Function to create a default txt file for a shader when program is run to prevent errors
-	CreateDefaultShaderFile();
+	CreateDefaultShaderFiles();
 
 	//Get current time
 	float time = (float)glfwGetTime();
