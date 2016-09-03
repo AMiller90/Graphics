@@ -1,4 +1,5 @@
 #include "RenderGeometry.h"
+#include "FlyCamera.h"
 
 RenderGeometry::RenderGeometry()
 {
@@ -7,13 +8,11 @@ RenderGeometry::RenderGeometry()
 
 	//Function to create a default txt file for a shader when program is run to prevent errors
 	CreateDefaultShaderFiles();
-
-	//Get current time
-	float time = (float)glfwGetTime();
-
 	//Initialize glfw
 	glfwInit();
 
+	//Get current time
+	float time = (float)glfwGetTime();
 	// create a basic window
 	window = glfwCreateWindow(1080, 720, "Window", nullptr, nullptr);
 
@@ -35,8 +34,8 @@ RenderGeometry::RenderGeometry()
 	//Create the view matrix
 	glm::mat4 view = glm::lookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
 	glm::mat4 projection = glm::perspective(glm::pi<float>() * 0.35f,
-		16 / 9.f, 0.1f, 1000.f);
-
+		
+		16 / 9.f, 0.1f, 1000.f); 
 	//Set matrix
 	m_projectionViewMatrix = projection * view;
 
@@ -79,17 +78,22 @@ void RenderGeometry::Draw()
 	GL_DEPTH_BUFFER_BIT informs it to clear the distance to the closest pixels.If we didn’t do this then
 	OpenGL may think the image of the last frame is still there and our new visuals may not display.*/
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	
+	m_time = glfwGetTime();
 	// bind shader
 	glUseProgram(m_programID);
 
 	// where to send the matrix
 	unsigned int projectionViewUniform = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
 
+	GLint loc = glGetUniformLocation(m_programID, "Time");
 	// send the matrix
 	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix));
-
+	glUniform1f(loc, m_time);
+	//printf("m_time: %f \n", m_time);
 	// draw quad
+	
+
 	glBindVertexArray(m_VAO);
 	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
 
@@ -181,13 +185,13 @@ bool RenderGeometry::GenerateBuffers()
 bool RenderGeometry::CompileAndLinkShaders()
 {
 	//Store the returned string into a variable
-	std::string vertex = ReadShaderFromFile("Defaultvert.txt");
+	std::string vertex = ReadShaderFromFile("vertexShader.txt");
 
 	//Convert to const char* so it can be used in the glShaderSourceFunction
 	const char* vsSource = vertex.c_str();
 
 	//Store the returned string into a variable
-	std::string fragment = ReadShaderFromFile("Defaultfrag.txt");
+	std::string fragment = ReadShaderFromFile("fragShader.txt");
 
 	//Convert to const char* so it can be used in the glShaderSourceFunction
 	const char* fsSource = fragment.c_str();

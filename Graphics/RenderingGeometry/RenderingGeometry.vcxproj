@@ -120,15 +120,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\CameraAndProjections\Camera.cpp" />
+    <ClCompile Include="..\CameraAndProjections\FlyCamera.cpp" />
+    <ClCompile Include="..\src\Application.cpp" />
     <ClCompile Include="..\src\gizmos\Gizmos.cpp" />
     <ClCompile Include="..\src\gl_core_4_4.c" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RenderGeometry.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\CameraAndProjections\Camera.h" />
+    <ClInclude Include="..\CameraAndProjections\FlyCamera.h" />
     <ClInclude Include="..\src\gizmos\Gizmos.h" />
     <ClInclude Include="..\src\gl_core_4_4.h" />
     <ClInclude Include="RenderGeometry.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Shaders\fragShader.txt" />
+    <Text Include="Shaders\vertexShader.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

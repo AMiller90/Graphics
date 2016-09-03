@@ -58,6 +58,7 @@ private:
 	unsigned int m_IBO;
 	unsigned int m_vertexShader;
 	unsigned int m_fragmentShader;
+	float m_time;
 	glm::mat4 m_projectionViewMatrix;
 
 	bool GenerateBuffers();
