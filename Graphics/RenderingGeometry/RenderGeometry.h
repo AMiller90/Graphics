@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <gizmos\Gizmos.h>
-#include "src\gl_core_4_4.h"
+#include "gl_core_4_4.h"
 #include <GLFW\glfw3.h>
 #include <glm\glm.hpp>
 #include <glm\ext.hpp>
@@ -58,6 +58,7 @@ private:
 	unsigned int m_IBO;
 	unsigned int m_vertexShader;
 	unsigned int m_fragmentShader;
+	float m_time;
 	glm::mat4 m_projectionViewMatrix;
 
 	bool GenerateBuffers();
