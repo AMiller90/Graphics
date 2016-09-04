@@ -69,8 +69,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(SolutionDir)deps\glfw\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)deps\glfw\include\;$(SolutionDir)deps\;$(SolutionDir)deps\gizmos;$(SolutionDir)IntroToOpenGL\src\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\glfw\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <IncludePath>C:\Users\chuwi\Documents\GitHub\Graphics\Graphics\src;$(SolutionDir)src;$(SolutionDir)deps\;$(SolutionDir)deps\glfw\include;$(SolutionDir)deps\stb-master;$(SolutionDir)deps\imgui;$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -1,5 +1,5 @@
 #include "RenderGeometry.h"
-#include "FlyCamera.h"
+
 
 RenderGeometry::RenderGeometry()
 {

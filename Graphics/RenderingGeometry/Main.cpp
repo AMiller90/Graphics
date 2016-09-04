@@ -2,13 +2,11 @@
 #include<iostream>
 #include "Application.h"
 #include "RenderGeometry.h"
-#include "FlyCamera.h"
 
 
 int main()
 {
 	Application* renderGeometry = new RenderGeometry();
-	Camera* myCamera = new FlyCamera;
 	if (renderGeometry->startUp() == true)
 	{
 		while (renderGeometry->update() == true)
