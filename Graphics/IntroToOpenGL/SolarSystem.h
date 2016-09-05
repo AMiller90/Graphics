@@ -1,7 +1,7 @@
 #ifndef _SOLARSYSTEM_H_
 #define _SOLARSYSTEM_H_
 
-#include "Application.h"
+#include <Application.h>
 
 using glm::mat4;
 using glm::vec3;
@@ -12,10 +12,10 @@ class SolarSystem : public Application
 
 public:
 	SolarSystem();
-	bool Create();
-	void Destroy();
-	bool Update();
-	void Draw();
+	bool startUp() override;
+	void Destroy() override;
+	bool update() override;
+	void Draw() override;
 
 private:
 

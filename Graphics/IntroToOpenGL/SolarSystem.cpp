@@ -5,7 +5,7 @@ SolarSystem::SolarSystem()
 {
 }
 
-bool SolarSystem::Create()
+bool SolarSystem::startUp()
 {
 	float time = (float)glfwGetTime();
 
@@ -69,7 +69,7 @@ void SolarSystem::Destroy()
 	glfwTerminate();
 }
 
-bool SolarSystem::Update()
+bool SolarSystem::update()
 {
 	while (glfwWindowShouldClose(window) == false &&
 		glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
@@ -95,30 +95,6 @@ bool SolarSystem::Update()
 
 		pluto = sun * glm::translate(vec3(10, 0, 2));
 		mars = sun * glm::translate(vec3(8, 0, -5));
-
-		/*float ex = earth[3].x;
-		float ey = earth[3].y;
-		float ez = earth[3].z;
-
-		float mx = moon[3].x;
-		float my = moon[3].y;
-		float mz = moon[3].z;*/
-		
-		
-		/*moon = earth * glm::translate(vec3(2 * sin(time), 0.f, 2 * cos(time)));
-		earth = sun * glm::translate(vec3(5 * sin(time* 0.5), 0.f, 5 * cos(time* 0.5)));
-
-		ez = sun[3].z + (5 * cos(time * 0.5));
-		ex = sun[3].x + (5 * sin(time * 0.5));
-
-		earth[3].x = sun[3].x + ex;
-		earth[3].z = sun[3].z + ez;
-
-		mz = earth[3].z + (2 * cos(time * 2));
-		mx = earth[3].x + (2 * sin(time * 2));
-
-		moon[3].x = earth[3].z + mx;
-		moon[3].z = earth[3].z + mz;*/
 
 		return true;
 	}

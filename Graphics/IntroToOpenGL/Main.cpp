@@ -7,9 +7,9 @@ int main()
 	
 	Application* solarsystem = new SolarSystem();
 
-	if(solarsystem->Create() == true)
+	if(solarsystem->startUp() == true)
 	{
-		while (solarsystem->Update() == true)
+		while (solarsystem->update() == true)
 			solarsystem->Draw();
 		solarsystem->Destroy();
 	}

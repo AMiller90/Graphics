@@ -15,9 +15,13 @@
     <ClCompile Include="..\deps\gizmos\Gizmos.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FlyCamera.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="..\src\gl_core_4_4.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FlyCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

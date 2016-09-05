@@ -35,9 +35,6 @@
     <ClInclude Include="SolarSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\gl_core_4_4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
