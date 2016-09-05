@@ -117,14 +117,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\deps\gizmos\Gizmos.cpp" />
-    <ClCompile Include="..\IntroToOpenGL\Src\gl_core_4_4.c" />
+    <ClCompile Include="..\src\gl_core_4_4.c" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="FlyCamera.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\deps\gizmos\Gizmos.h" />
-    <ClInclude Include="..\IntroToOpenGL\Src\gl_core_4_4.h" />
+    <ClInclude Include="..\src\gl_core_4_4.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="FlyCamera.h" />
   </ItemGroup>

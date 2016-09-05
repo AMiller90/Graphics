@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <gizmos\Gizmos.h>
-#include "src\gl_core_4_4.h"
+#include "gl_core_4_4.h"
 #include <glfw\include\GLFW\glfw3.h>
 #include <glm\glm.hpp>
 #include <glm\ext.hpp>
