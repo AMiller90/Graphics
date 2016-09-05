@@ -120,13 +120,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\gizmos\Gizmos.cpp" />
+    <ClCompile Include="..\deps\gizmos\Gizmos.cpp" />
     <ClCompile Include="..\src\gl_core_4_4.c" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RenderGeometry.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\gizmos\Gizmos.h" />
+    <ClInclude Include="..\deps\gizmos\Gizmos.h" />
     <ClInclude Include="..\src\gl_core_4_4.h" />
     <ClInclude Include="RenderGeometry.h" />
   </ItemGroup>
