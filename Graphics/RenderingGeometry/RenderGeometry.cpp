@@ -87,14 +87,22 @@ void RenderGeometry::Draw()
 	unsigned int projectionViewUniform = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
 
 	GLint loc = glGetUniformLocation(m_programID, "Time");
-	// send the matrix
-	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix));
 	//glUniform1f(loc, m_time);
 	//printf("m_time: %f \n", m_time);
 	// draw quad
-	
 
 	glBindVertexArray(m_VAO);
+
+	//Plane
+	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix));
+	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
+
+	//Triangle
+	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix * glm::translate(vec3(5, 6,0))));
+	glDrawElements(GL_TRIANGLE_STRIP, 3, GL_UNSIGNED_INT, 0);
+
+	//Cube
+	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix * glm::translate(vec3(-25, 0, 0))));
 	glDrawElements(GL_TRIANGLE_STRIP, 13, GL_UNSIGNED_INT, 0);
 
 	//This updates the monitors display but swapping the rendered back buffer.If we did not call this then we wouldn’t be able to see
@@ -129,26 +137,29 @@ bool RenderGeometry::GenerateBuffers()
 	Vertex vertices[8];
 	unsigned int indices[13] = { 0,1,2,3,4,5,1,6,0,7,2,4,6};
 	
+	//Cube
+	//Plane
+	//Triangle
 	vertices[0].position = vec4(-5, 0, -5, 1);
 	vertices[1].position = vec4(5, 0, -5, 1);
 	vertices[2].position = vec4(-5, 0, 5, 1);
+	//Triangle
 	vertices[3].position = vec4(5, 0, 5, 1);
+	//Plane
 
 	vertices[4].position = vec4(-5, 5, 5, 1);
 	vertices[5].position = vec4(5, 5, 5, 1);
 
 	vertices[6].position = vec4(5, 5, -5, 1);
 	vertices[7].position = vec4(-5, 5, -5, 1);
+	//Cube
 
-	/*vertices[0].colour = vec4(1, 0, 0, 1);
+
+
+	vertices[0].colour = vec4(1, 0, 0, 1);
 	vertices[1].colour = vec4(1, 0, 0, 1);
 	vertices[2].colour = vec4(1, 0, 0, 1);
 	vertices[3].colour = vec4(1, 0, 0, 1);
-
-	vertices[4].colour = vec4(1, 0, 0, 1);
-	vertices[5].colour = vec4(1, 0, 0, 1);
-	vertices[6].colour = vec4(1, 0, 0, 1);
-	vertices[7].colour = vec4(1, 0, 0, 1);*/
 
 	// create opengl data
 
