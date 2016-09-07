@@ -95,7 +95,7 @@ void RenderGeometry::Draw()
 	
 
 	glBindVertexArray(m_VAO);
-	glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLE_STRIP, 13, GL_UNSIGNED_INT, 0);
 
 	//This updates the monitors display but swapping the rendered back buffer.If we did not call this then we wouldn’t be able to see
 	//anything rendered by us with OpenGL.
@@ -126,9 +126,9 @@ void RenderGeometry::Destroy()
 bool RenderGeometry::GenerateBuffers()
 {
 	// create vertex and index data for a quad
-	Vertex vertices[6];
-	unsigned int indices[6] = { 0,1,2,3,4,5};
-
+	Vertex vertices[8];
+	unsigned int indices[13] = { 0,1,2,3,4,5,1,6,0,7,2,4,6};
+	
 	vertices[0].position = vec4(-5, 0, -5, 1);
 	vertices[1].position = vec4(5, 0, -5, 1);
 	vertices[2].position = vec4(-5, 0, 5, 1);
@@ -137,10 +137,18 @@ bool RenderGeometry::GenerateBuffers()
 	vertices[4].position = vec4(-5, 5, 5, 1);
 	vertices[5].position = vec4(5, 5, 5, 1);
 
-	vertices[0].colour = vec4(1, 0, 0, 1);
-	vertices[1].colour = vec4(0, 1, 0, 1);
-	vertices[2].colour = vec4(0, 0, 1, 1);
-	vertices[3].colour = vec4(1, 1, 1, 1);
+	vertices[6].position = vec4(5, 5, -5, 1);
+	vertices[7].position = vec4(-5, 5, -5, 1);
+
+	/*vertices[0].colour = vec4(1, 0, 0, 1);
+	vertices[1].colour = vec4(1, 0, 0, 1);
+	vertices[2].colour = vec4(1, 0, 0, 1);
+	vertices[3].colour = vec4(1, 0, 0, 1);
+
+	vertices[4].colour = vec4(1, 0, 0, 1);
+	vertices[5].colour = vec4(1, 0, 0, 1);
+	vertices[6].colour = vec4(1, 0, 0, 1);
+	vertices[7].colour = vec4(1, 0, 0, 1);*/
 
 	// create opengl data
 
@@ -156,12 +164,12 @@ bool RenderGeometry::GenerateBuffers()
 
 	// set vertex buffer data
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(Vertex),
+	glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(Vertex),
 		vertices, GL_STATIC_DRAW);
 
 	// index data
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 *
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 13 *
 		sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
 	// position
