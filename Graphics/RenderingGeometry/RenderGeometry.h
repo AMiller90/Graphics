@@ -58,6 +58,8 @@ private:
 	unsigned int m_IBO;
 	unsigned int m_vertexShader;
 	unsigned int m_fragmentShader;
+	unsigned int m_projectionViewUniform;
+
 	float m_time;
 	glm::mat4 m_projectionViewMatrix;
 
@@ -65,5 +67,10 @@ private:
 	bool CompileAndLinkShaders();
 	std::string ReadShaderFromFile(const std::string &a_File);
 	bool CreateDefaultShaderFiles();
+
+	void DrawPlane(const int &width, const int &height);
+	void DrawCircle(const int &radius, bool isFilled);
+	void DrawCube(const int &width, const int &height);
+	void DrawTriangle(const int &width, const int &height);
 };
 #endif

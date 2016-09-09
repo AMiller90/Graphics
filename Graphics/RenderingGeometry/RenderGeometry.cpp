@@ -34,7 +34,6 @@ RenderGeometry::RenderGeometry()
 	//Create the view matrix
 	glm::mat4 view = glm::lookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
 	glm::mat4 projection = glm::perspective(glm::pi<float>() * 0.35f,
-		
 		16 / 9.f, 0.1f, 1000.f); 
 	//Set matrix
 	m_projectionViewMatrix = projection * view;
@@ -84,26 +83,29 @@ void RenderGeometry::Draw()
 	glUseProgram(m_programID);
 
 	// where to send the matrix
-	unsigned int projectionViewUniform = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
+	m_projectionViewUniform = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
 
 	GLint loc = glGetUniformLocation(m_programID, "Time");
 	//glUniform1f(loc, m_time);
 	//printf("m_time: %f \n", m_time);
-	// draw quad
-
+	
 	glBindVertexArray(m_VAO);
 
-	//Plane
-	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix));
-	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
-
 	//Triangle
-	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix * glm::translate(vec3(5, 6,0))));
-	glDrawElements(GL_TRIANGLE_STRIP, 3, GL_UNSIGNED_INT, 0);
+	//DrawTriangle(5,5);
+
+	//Plane
+	//DrawPlane(5,5);
 
 	//Cube
-	glUniformMatrix4fv(projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix * glm::translate(vec3(-25, 0, 0))));
-	glDrawElements(GL_TRIANGLE_STRIP, 13, GL_UNSIGNED_INT, 0);
+	//DrawCube(5,5);
+
+	//Circle
+	DrawCircle(5,false);
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	//This updates the monitors display but swapping the rendered back buffer.If we did not call this then we wouldn’t be able to see
 	//anything rendered by us with OpenGL.
@@ -133,33 +135,10 @@ void RenderGeometry::Destroy()
 ///</summary>
 bool RenderGeometry::GenerateBuffers()
 {
-	// create vertex and index data for a quad
-	Vertex vertices[8];
-	unsigned int indices[13] = { 0,1,2,3,4,5,1,6,0,7,2,4,6};
-	
-	//Cube
-	//Plane
-	//Triangle
-	vertices[0].position = vec4(-5, 0, -5, 1);
-	vertices[1].position = vec4(5, 0, -5, 1);
-	vertices[2].position = vec4(-5, 0, 5, 1);
-	//Triangle
-	vertices[3].position = vec4(5, 0, 5, 1);
-	//Plane
-
-	vertices[4].position = vec4(-5, 5, 5, 1);
-	vertices[5].position = vec4(5, 5, 5, 1);
-
-	vertices[6].position = vec4(5, 5, -5, 1);
-	vertices[7].position = vec4(-5, 5, -5, 1);
-	//Cube
-
-
-
-	vertices[0].colour = vec4(1, 0, 0, 1);
-	vertices[1].colour = vec4(1, 0, 0, 1);
-	vertices[2].colour = vec4(1, 0, 0, 1);
-	vertices[3].colour = vec4(1, 0, 0, 1);
+	////vertices[0].colour = vec4(1, 0, 0, 1);
+	////vertices[1].colour = vec4(1, 0, 0, 1);
+	////vertices[2].colour = vec4(1, 0, 0, 1);
+	////vertices[3].colour = vec4(1, 0, 0, 1);
 
 	// create opengl data
 
@@ -175,13 +154,13 @@ bool RenderGeometry::GenerateBuffers()
 
 	// set vertex buffer data
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(Vertex),
-		vertices, GL_STATIC_DRAW);
+	/*glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(Vertex),
+		vertices, GL_STATIC_DRAW);*/
 
 	// index data
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 13 *
-		sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	/*glBufferData(GL_ELEMENT_ARRAY_BUFFER, 13 *
+		sizeof(unsigned int), indices, GL_STATIC_DRAW);*/
 
 	// position
 	glEnableVertexAttribArray(0);
@@ -190,11 +169,6 @@ bool RenderGeometry::GenerateBuffers()
 	// colour
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(vec4)));
-
-	// safety
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	return true;
 }
@@ -286,6 +260,9 @@ std::string RenderGeometry::ReadShaderFromFile(const std::string &a_File)
 	return contents;
 }
 
+///<summary>
+///Function that creates default shader files
+///</summary>
 bool RenderGeometry::CreateDefaultShaderFiles()
 {
 	//Create default vertShader incase user doesnt have a file to read from at first
@@ -327,4 +304,145 @@ bool RenderGeometry::CreateDefaultShaderFiles()
 	}
 
 	return true;
+}
+
+///<summary>
+///Function that draws a plane
+///<para></para>
+///<remarks><paramref name=" Width"></paramref> -The width of the plane</remarks>
+///<para></para>
+///<remarks><paramref name=" Height"></paramref> -The height of the plane</remarks>
+///</summary>
+void RenderGeometry::DrawPlane(const int &width, const int &height)
+{
+	// create vertex and index data
+	Vertex vertices[4];
+	unsigned int indices[4] = {0,1,2,3};
+
+	//Set the positions
+	vertices[0].position = vec4(-width, 0, -height, 1);
+	vertices[1].position = vec4(width, 0, -height, 1);
+	vertices[2].position = vec4(-width, 0, height, 1);
+	vertices[3].position = vec4(width, 0, height, 1);
+
+	//Set the buffer data for the vertices
+	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex),
+		vertices, GL_STATIC_DRAW);
+
+	//Set the buffer data for the indices
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 *
+		sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
+	glUniformMatrix4fv(m_projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix * glm::translate(vec3(5, 2, -5))));
+	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
+}
+
+///<summary>
+///Function that draws a Circle
+///<para></para>
+///<remarks><paramref name=" Height"></paramref> -The Radius of the circle</remarks>
+///<para></para>
+///<remarks><paramref name=" isFilled"></paramref> -If true circle will be filled in, If false circle will be empty</remarks>
+///</summary>
+void RenderGeometry::DrawCircle(const int &radius, bool isFilled)
+{
+	// create vertex and index data for circle
+	Vertex vertices[24];
+	unsigned int indices[24] = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};
+
+	//Loop through the number of indices
+	for (int i = 0; i<=23; i++)
+	{//Angle between each index
+		double angle = i * (2 * 3.14159 / 22);
+		//get the cos of the angle and multiply by the radius
+		double X = cos(angle) * radius;
+		//get the sin of the angle and multiply by the radius
+		double Z = sin(angle) * radius;
+		//Set the appropriate values per vertex
+		vertices[i].position = vec4(X,0,Z,1);
+	}
+
+	    //Set the buffer data for the vertices
+		glBufferData(GL_ARRAY_BUFFER, 24 * sizeof(Vertex),
+			vertices, GL_STATIC_DRAW);
+
+		//Set the buffer data for the indices
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 24 *
+			sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
+		glUniformMatrix4fv(m_projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix));
+
+		//If false, then dont fill circle
+		if(!isFilled)
+			glDrawElements(GL_TRIANGLE_STRIP, 24, GL_UNSIGNED_INT, 0);
+		else //Triangle fan fills in the circle
+			glDrawElements(GL_TRIANGLE_FAN, 24, GL_UNSIGNED_INT, 0);
+	
+}
+
+///<summary>
+///Function that draws a Triangle
+///<para></para>
+///<remarks><paramref name=" Width"></paramref> -The width of the triangle</remarks>
+///<para></para>
+///<remarks><paramref name=" Height"></paramref> -The height of the triangle</remarks>
+///</summary>
+void RenderGeometry::DrawTriangle(const int &width, const int &height)
+{
+	// create vertex and index data
+	Vertex vertices[3];
+	unsigned int indices[3] = {0,1,2};
+
+	//Set the positions
+	vertices[0].position = vec4(-width, 0, -height, 1);
+	vertices[1].position = vec4(width, 0, -height, 1);
+	vertices[2].position = vec4(-width, 0, height, 1);
+
+	//Set the buffer data for the vertices
+	glBufferData(GL_ARRAY_BUFFER, 3 * sizeof(Vertex),
+		vertices, GL_STATIC_DRAW);
+
+	//Set the buffer data for the indices
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 *
+		sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
+	glUniformMatrix4fv(m_projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix * glm::translate(vec3(0, -15, 0))));
+	glDrawElements(GL_TRIANGLE_STRIP, 3, GL_UNSIGNED_INT, 0);
+}
+
+///<summary>
+///Function that draws a Cube
+///<para></para>
+///<remarks><paramref name=" Width"></paramref> -The width of the cube</remarks>
+///<para></para>
+///<remarks><paramref name=" Height"></paramref> -The height of the cube</remarks>
+///</summary>
+void RenderGeometry::DrawCube(const int &width, const int &height)
+{
+	const unsigned int top = width;
+
+	// create vertex and index data
+	Vertex vertices[8];
+	unsigned int indices[13] = { 0,1,2,3,4,5,1,6,0,7,2,4,6 };
+
+	//Set the positions
+	vertices[0].position = vec4(-width, 0, -height, 1);
+	vertices[1].position = vec4(width, 0, -height, 1);
+	vertices[2].position = vec4(-width, 0, height, 1);
+	vertices[3].position = vec4(width, 0, height, 1);
+	vertices[4].position = vec4(-width, top, height, 1);
+	vertices[5].position = vec4(width, top, height, 1);
+	vertices[6].position = vec4(width, top, -height, 1);
+	vertices[7].position = vec4(-width, top, -height, 1);
+
+	//Set the buffer data for the vertices
+	glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(Vertex),
+		vertices, GL_STATIC_DRAW);
+
+	//Set the buffer data for the indices
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 13 *
+		sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
+	glUniformMatrix4fv(m_projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix * glm::translate(vec3(-25, 0, 0))));
+	glDrawElements(GL_TRIANGLE_STRIP, 13, GL_UNSIGNED_INT, 0);
 }
