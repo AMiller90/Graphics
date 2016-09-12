@@ -41,6 +41,7 @@ struct Vertex
 	vec4 colour;
 
 };
+
 class RenderGeometry : public Application
 {
 public:
@@ -51,26 +52,41 @@ public:
 	void Destroy() override;
 
 private:
+
 	GLFWwindow* window;
-	unsigned int m_programID;
-	unsigned int m_VAO;
-	unsigned int m_VBO;
-	unsigned int m_IBO;
-	unsigned int m_vertexShader;
-	unsigned int m_fragmentShader;
-	unsigned int m_projectionViewUniform;
 
 	float m_time;
 	glm::mat4 m_projectionViewMatrix;
 
-	bool GenerateBuffers();
+	unsigned int m_programID;
+	unsigned int m_cubeVBO, m_cubeIBO, m_cubeVAO;
+	unsigned int m_triangleVBO, m_triangleIBO, m_triangleVAO;
+	unsigned int m_planeVBO, m_planeIBO, m_planeVAO;
+	unsigned int m_circleVBO, m_circleIBO, m_circleVAO;
+	unsigned int m_sphereVBO, m_sphereIBO, m_sphereVAO;
+	unsigned int m_vertexShader;
+	unsigned int m_fragmentShader;
+	unsigned int m_projectionViewUniform;
+
+
+	bool GLInitWindow();
+	bool GenerateCubeBuffers(const int &width, const int &height);
+	bool GenerateTriangleBuffers(const int &width, const int &height);
+	bool GeneratePlaneBuffers(const int &width, const int &height);
+	bool GenerateCircleBuffers(const int &radius);
+	bool GenerateSphereBuffers(const int &radius, const int &np, const int &numMeridians);
+
 	bool CompileAndLinkShaders();
 	std::string ReadShaderFromFile(const std::string &a_File);
 	bool CreateDefaultShaderFiles();
 
-	void DrawPlane(const int &width, const int &height);
-	void DrawCircle(const int &radius, bool isFilled);
-	void DrawCube(const int &width, const int &height);
-	void DrawTriangle(const int &width, const int &height);
+	void DrawPlane();
+	void DrawCircle(bool isFilled);
+	void DrawCube();
+	void DrawTriangle();
+
+	void DrawSphere();
+	void DrawHalfCircle(const int &np, Vertex* vertices, const int &radius);
+
 };
 #endif
