@@ -1,4 +1,6 @@
 #include "RenderGeometry.h"
+//Global variable to set total verts of Sphere
+int spheretotal;
 
 ///<summary>
 ///Constructor
@@ -27,19 +29,24 @@ bool RenderGeometry::startUp()
 	GenerateCircleBuffers(5);
 	GeneratePlaneBuffers(5, 5);
 	GenerateCubeBuffers(5, 5);
-	GenerateSphereBuffers(5, 12, 4);
+	GenerateSphereBuffers(5, 50, 20);
 	CompileAndLinkShaders();
 
 	return true;
 }
 
 ///<summary>
-///Function that handles the window staying open
+///Function that handles the window staying open and camera update
 ///</summary>
 bool RenderGeometry::update()
 {
 	while (glfwWindowShouldClose(window) == false &&
 		glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
+
+		//update time and camera
+		m_time = glfwGetTime();
+		myCamera->update(m_time);
+		m_projectionViewMatrix = myCamera->getProjectionView();
 
 		return true;
 	}
@@ -57,7 +64,6 @@ void RenderGeometry::Draw()
 	OpenGL may think the image of the last frame is still there and our new visuals may not display.*/
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	m_time = glfwGetTime();
 	// bind shader
 	glUseProgram(m_programID);
 
@@ -65,22 +71,21 @@ void RenderGeometry::Draw()
 	m_projectionViewUniform = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
 
 	GLint loc = glGetUniformLocation(m_programID, "Time");
-	/*glUniform1f(loc, m_time);
-	printf("m_time: %f \n", m_time);*/
-	
-	
 
+	//glUniform1f(loc, m_time);
+	//printf("m_time: %f \n", m_time);
+	
 	//Triangle
-	//DrawTriangle();
+	DrawTriangle();
 
 	//Plane
-	//DrawPlane();
+	DrawPlane();
 
 	//Cube
-	//DrawCube();
+	DrawCube();
 
 	//Circle
-	//DrawCircle(false);
+	DrawCircle(true);
 
 	//Sphere
 	DrawSphere();
@@ -148,12 +153,20 @@ bool RenderGeometry::GLInitWindow()
 		glfwTerminate();
 	}
 
+	//Initilaize the camera
+	myCamera = new FlyCamera;
+
 	//Create the view matrix
-	glm::mat4 view = glm::lookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
-	glm::mat4 projection = glm::perspective(glm::pi<float>() * 0.35f,
-		16 / 9.f, 0.1f, 1000.f);
+	//glm::mat4 view = glm::lookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
+	//glm::mat4 projection = glm::perspective(glm::pi<float>() * 0.35f,
+	//	16 / 9.f, 0.1f, 1000.f);
+
+	myCamera->setLookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
+	myCamera->setPerspective(glm::pi<float>() * 0.35f, 16 / 9.f, 0.1f, 1000.f);
+	
 	//Set matrix
-	m_projectionViewMatrix = projection * view;
+	//m_projectionViewMatrix = projection * view;
+	m_projectionViewMatrix = myCamera->getProjection() * myCamera->getView();
 
 	return true;
 }
@@ -400,27 +413,43 @@ bool RenderGeometry::GenerateCircleBuffers(const int & radius)
 ///</summary>
 bool RenderGeometry::GenerateSphereBuffers(const int& radius, const int& np, const int& numMeridians)
 {
-	//create vertex and index data for circle
-	Vertex* vertices = new Vertex[np];
+	//Set this so the number of elements to draw will be correct
+	spheretotal = np * numMeridians;
 
-	unsigned int indices[12] = { 0,1,2,3,4,5,6,7,8,9,10,11 };
+	//Indices array
+	unsigned int* indices = new unsigned int[spheretotal];
 
-	DrawHalfCircle(np, vertices, 5);
-
-
-	for (int i = 0; i <= numMeridians; i++)
+	//Set up indices count
+	for (unsigned int i = 0; i < spheretotal; i++)
 	{
-		double phi = 2 * 3.14159265359 * i / numMeridians;
-		std::cout << phi << "\n"; 
-		for (int j = 0; j < np; j++)
-		{
-			//Angle between each index
-			//get the cos of the angle and multiply by the radius
-			double X = vertices[j].position.x * cos(phi) + vertices[j].position.z * sin(phi);
-			//get the sin of the angle and multiply by the radius
-			double Z = vertices[j].position.z * cos(phi) - vertices[j].position.x * sin(phi);
+		indices[i] = i;
+	}
+
+	//Create original verts, the half circle
+	Vertex* newVerts = DrawHalfCircle(np, 5);
+
+	//Set up a counter to start at that index of the vertices array so we can set the 
+	//respective vertex with meridian points
+	unsigned int counter = 0;
+
+	//create total verts for spehere
+	Vertex* vertices = new Vertex[spheretotal];
+
+	//Loop through meridians
+	for (int i = 0; i < numMeridians; i++)
+	{//Get the angle
+		double phi = 2 * 3.14159265359 * i / (numMeridians - 1);
+		//Loop through the number of points and increase the counter each time
+		for (int j = 0; j < np; j++, counter++)
+		{//Create X variable for the current x position of newVerts
+			double X = newVerts[j].position.x;
+			//Create Y variable for the current y position of newVerts * cos(phi) - the current z position of newVerts * sin(phi)
+			double Y = newVerts[j].position.y * cos(phi) - newVerts[j].position.z * sin(phi);
+			//Create Z variable for the current z position of newVerts * cos(phi) + the current y position of newVerts * sin(phi)
+			double Z = newVerts[j].position.z * cos(phi) + newVerts[j].position.y * sin(phi);
+
 			//Set the appropriate values per vertex
-			//vertices[i].position = vec4(X, vertices[j].position.y, Z, 1);
+			vertices[counter].position = vec4(X, Y, Z, 1);
 		}
 	}
 
@@ -442,11 +471,11 @@ bool RenderGeometry::GenerateSphereBuffers(const int& radius, const int& np, con
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_sphereIBO);
 
 	//Set the buffer data for the vertices
-	glBufferData(GL_ARRAY_BUFFER, np * sizeof(Vertex),
+	glBufferData(GL_ARRAY_BUFFER, spheretotal * sizeof(Vertex),
 		vertices, GL_STATIC_DRAW);
 
 	//Set the buffer data for the indices
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 12*
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, spheretotal *
 		sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
 	// position
@@ -599,7 +628,7 @@ bool RenderGeometry::CreateDefaultShaderFiles()
 void RenderGeometry::DrawPlane()
 {
 	glBindVertexArray(m_planeVAO);
-	glUniformMatrix4fv(m_projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix * glm::translate(vec3(5, 2, -5))));
+	glUniformMatrix4fv(m_projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix * glm::translate(vec3(5, 5, -5))));
 	glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
 }
 
@@ -647,8 +676,8 @@ void RenderGeometry::DrawCube()
 void RenderGeometry::DrawSphere()
 {
 	glBindVertexArray(m_sphereVAO);
-	glUniformMatrix4fv(m_projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix));
-	glDrawElements(GL_LINE_LOOP, 12, GL_UNSIGNED_INT, 0);
+	glUniformMatrix4fv(m_projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix * glm::translate(vec3(-15, -5, 5))));
+	glDrawElements(GL_LINE_LOOP, spheretotal, GL_UNSIGNED_INT, 0);
 }
 
 ///<summary>
@@ -660,21 +689,11 @@ void RenderGeometry::DrawSphere()
 ///<para></para>
 ///<remarks><paramref name=" Radius"></paramref> -The radius of the half circle</remarks>
 ///</summary>
-void RenderGeometry::DrawHalfCircle(const int& np, Vertex* vertices, const int& radius)
+Vertex* RenderGeometry::DrawHalfCircle(const int& np, const int& radius)
 {
-	//int pieces = np - 1;
-
-	//for (int i = 0; i < np; i++)
-	//{
-	//	float theta = 3.14159265359 * i / pieces;
-	//	double X = radius * cos(theta);
-	//	double Y = radius * sin(theta);
-	//	//double Z = 0;
-
-	//	vertices[i].position = vec4(X, Y, 0, 1);
-	//}
-
 	int pieces = np - 1;
+
+	Vertex* vertices = new Vertex[np];
 
 	for (int i = 0; i < np; i++)
 	{
@@ -687,4 +706,7 @@ void RenderGeometry::DrawHalfCircle(const int& np, Vertex* vertices, const int& 
 		//Set the appropriate values per vertex
 		vertices[i].position = vec4(X, Y, 0, 1);
 	}
+
+	return vertices;
+
 }

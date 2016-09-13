@@ -11,6 +11,7 @@
 #include<glm\gtx\transform.hpp>
 #include<fstream>
 #include "Application.h"
+#include "FlyCamera.h"
 
 //PLEASE READ:
 //The ReadShaderFromFile function does exactly that. The glShaderSource openGL function has a parameter that takes a const char* data type
@@ -53,6 +54,7 @@ public:
 
 private:
 
+	Camera* myCamera;
 	GLFWwindow* window;
 
 	float m_time;
@@ -84,9 +86,8 @@ private:
 	void DrawCircle(bool isFilled);
 	void DrawCube();
 	void DrawTriangle();
-
 	void DrawSphere();
-	void DrawHalfCircle(const int &np, Vertex* vertices, const int &radius);
+	Vertex* DrawHalfCircle(const int &np, const int &radius);
 
 };
 #endif
