@@ -408,20 +408,20 @@ bool RenderGeometry::GenerateSphereBuffers(const int& radius, const int& np, con
 	DrawHalfCircle(np, vertices, 5);
 
 
-	for (int i = 0; i < numMeridians; i++)
+	for (int i = 0; i <= numMeridians; i++)
 	{
 		double phi = 2 * 3.14159265359 * i / numMeridians;
+		std::cout << phi << "\n"; 
 		for (int j = 0; j < np; j++)
 		{
 			//Angle between each index
 			//get the cos of the angle and multiply by the radius
-			double X = vertices[i].position.x * cos(phi) + vertices[i].position.z * sin(phi);
+			double X = vertices[j].position.x * cos(phi) + vertices[j].position.z * sin(phi);
 			//get the sin of the angle and multiply by the radius
-			double Z = vertices[i].position.z * cos(phi) - vertices[i].position.x * sin(phi);
+			double Z = vertices[j].position.z * cos(phi) - vertices[j].position.x * sin(phi);
 			//Set the appropriate values per vertex
-			vertices[i].position = vec4(X, vertices[i].position.y, Z, 1);
+			//vertices[i].position = vec4(X, vertices[j].position.y, Z, 1);
 		}
-
 	}
 
 	// generate buffers
@@ -662,10 +662,24 @@ void RenderGeometry::DrawSphere()
 ///</summary>
 void RenderGeometry::DrawHalfCircle(const int& np, Vertex* vertices, const int& radius)
 {
+	//int pieces = np - 1;
+
+	//for (int i = 0; i < np; i++)
+	//{
+	//	float theta = 3.14159265359 * i / pieces;
+	//	double X = radius * cos(theta);
+	//	double Y = radius * sin(theta);
+	//	//double Z = 0;
+
+	//	vertices[i].position = vec4(X, Y, 0, 1);
+	//}
+
+	int pieces = np - 1;
+
 	for (int i = 0; i < np; i++)
 	{
 		//Angle between each index
-		double theta = i  * 3.14159265359 / np;
+		double theta = 3.14159265359 * i / pieces;
 		//get the cos of the angle and multiply by the radius
 		double X = cos(theta) * radius;
 		//get the sin of the angle and multiply by the radius
