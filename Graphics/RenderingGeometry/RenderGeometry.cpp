@@ -1,6 +1,4 @@
 #include "RenderGeometry.h"
-//Global variable to set total verts of Sphere
-int spheretotal;
 
 ///<summary>
 ///Constructor
@@ -29,7 +27,7 @@ bool RenderGeometry::startUp()
 	GenerateCircleBuffers(5);
 	GeneratePlaneBuffers(5, 5);
 	GenerateCubeBuffers(5, 5);
-	GenerateSphereBuffers(5, 50, 20);
+	GenerateSphereBuffers(5, 30, 30);
 	CompileAndLinkShaders();
 
 	return true;
@@ -76,16 +74,16 @@ void RenderGeometry::Draw()
 	//printf("m_time: %f \n", m_time);
 	
 	//Triangle
-	DrawTriangle();
+	//DrawTriangle();
 
 	//Plane
-	DrawPlane();
+	//DrawPlane();
 
 	//Cube
-	DrawCube();
+	//DrawCube();
 
 	//Circle
-	DrawCircle(true);
+	//DrawCircle(true);
 
 	//Sphere
 	DrawSphere();
@@ -414,44 +412,15 @@ bool RenderGeometry::GenerateCircleBuffers(const int & radius)
 bool RenderGeometry::GenerateSphereBuffers(const int& radius, const int& np, const int& numMeridians)
 {
 	//Set this so the number of elements to draw will be correct
-	spheretotal = np * numMeridians;
-
-	//Indices array
-	unsigned int* indices = new unsigned int[spheretotal];
-
-	//Set up indices count
-	for (unsigned int i = 0; i < spheretotal; i++)
-	{
-		indices[i] = i;
-	}
+	const unsigned int size = np * numMeridians;
+	Vertex* vertices = new Vertex[size];
+	unsigned int* indices;
 
 	//Create original verts, the half circle
-	Vertex* newVerts = DrawHalfCircle(np, 5);
+	Vertex* newVerts = DrawHalfCircle(np, radius);
+	vertices = generateSphereVertices(np, numMeridians, newVerts);
+	indices = generateSphereIndicies(np, numMeridians);
 
-	//Set up a counter to start at that index of the vertices array so we can set the 
-	//respective vertex with meridian points
-	unsigned int counter = 0;
-
-	//create total verts for spehere
-	Vertex* vertices = new Vertex[spheretotal];
-
-	//Loop through meridians
-	for (int i = 0; i < numMeridians; i++)
-	{//Get the angle
-		double phi = 2 * 3.14159265359 * i / (numMeridians - 1);
-		//Loop through the number of points and increase the counter each time
-		for (int j = 0; j < np; j++, counter++)
-		{//Create X variable for the current x position of newVerts
-			double X = newVerts[j].position.x;
-			//Create Y variable for the current y position of newVerts * cos(phi) - the current z position of newVerts * sin(phi)
-			double Y = newVerts[j].position.y * cos(phi) - newVerts[j].position.z * sin(phi);
-			//Create Z variable for the current z position of newVerts * cos(phi) + the current y position of newVerts * sin(phi)
-			double Z = newVerts[j].position.z * cos(phi) + newVerts[j].position.y * sin(phi);
-
-			//Set the appropriate values per vertex
-			vertices[counter].position = vec4(X, Y, Z, 1);
-		}
-	}
 
 	// generate buffers
 	glGenBuffers(1, &m_sphereVBO);
@@ -471,12 +440,12 @@ bool RenderGeometry::GenerateSphereBuffers(const int& radius, const int& np, con
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_sphereIBO);
 
 	//Set the buffer data for the vertices
-	glBufferData(GL_ARRAY_BUFFER, spheretotal * sizeof(Vertex),
+	glBufferData(GL_ARRAY_BUFFER, size * sizeof(Vertex),
 		vertices, GL_STATIC_DRAW);
 
 	//Set the buffer data for the indices
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, spheretotal *
-		sizeof(unsigned int), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (indicesCounter *
+		sizeof(unsigned int)), indices, GL_STATIC_DRAW);
 
 	// position
 	glEnableVertexAttribArray(0);
@@ -677,7 +646,7 @@ void RenderGeometry::DrawSphere()
 {
 	glBindVertexArray(m_sphereVAO);
 	glUniformMatrix4fv(m_projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix * glm::translate(vec3(-15, -5, 5))));
-	glDrawElements(GL_LINE_LOOP, spheretotal, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLE_STRIP, indicesCounter, GL_UNSIGNED_INT, 0);
 }
 
 ///<summary>
@@ -709,4 +678,76 @@ Vertex* RenderGeometry::DrawHalfCircle(const int& np, const int& radius)
 
 	return vertices;
 
+}
+
+///<summary>
+///Function that generates the sphere vertices
+///<para></para>
+///<remarks><paramref name=" Np"></paramref> -The number of points</remarks>
+///<para></para>
+///<remarks><paramref name=" NumMeridians"></paramref> -The number of subdivisions</remarks>
+///<para></para>
+///<remarks><paramref name=" halfSphere"></paramref> -The verts of the half circle</remarks>
+///</summary>
+Vertex* RenderGeometry::generateSphereVertices(const unsigned int& np, const unsigned int& numMeridians, Vertex*& halfSphere)
+{
+	//Set up a counter to start at that index of the vertices array so we can set the 
+	//respective vertex with meridian points
+	unsigned int counter = 0;
+
+	//create total verts for spehere
+	Vertex* vertices = new Vertex[np * numMeridians];
+
+	//Loop through meridians
+	for (int i = 0; i < numMeridians; i++)
+	{//Get the angle
+		float phi = 2 * 3.14159265359 * ((float)i / (float)(numMeridians));
+		//Loop through the number of points and increase the counter each time
+		for (int j = 0; j < np; j++, counter++)
+		{//Create X variable for the current x position of newVerts
+			float X = halfSphere[j].position.x;
+			//Create Y variable for the current y position of newVerts * cos(phi) - the current z position of newVerts * sin(phi)
+			float Y = halfSphere[j].position.y * cos(phi) - halfSphere[j].position.z * sin(phi);
+			//Create Z variable for the current z position of newVerts * cos(phi) + the current y position of newVerts * sin(phi)
+			float Z = halfSphere[j].position.z * cos(phi) + halfSphere[j].position.y * sin(phi);
+
+			//Set the appropriate values per vertex
+			vertices[counter].position = vec4(X, Y, Z, 1);
+		}
+	}
+
+	return vertices;
+}
+
+///<summary>
+///Function that generates the sphere indices
+///<para></para>
+///<remarks><paramref name=" Np"></paramref> -The number of points</remarks>
+///<para></para>
+///<remarks><paramref name=" NumMeridians"></paramref> -The number of subdivisions</remarks>
+///</summary>
+unsigned int* RenderGeometry::generateSphereIndicies(const unsigned int & np, const unsigned int & numMeridians)
+{
+
+	unsigned int* indices = new unsigned int[2 * (np * (numMeridians + 1))];
+	indicesCounter = 2 * (np * (numMeridians + 1));
+
+	for (unsigned int i = 0; i < numMeridians; i++)
+	{
+		unsigned int beginning = i * np;
+		for (int j = 0; j < np; j++)
+		{
+			unsigned int botR = ((beginning + np + j) % (np * numMeridians));
+			unsigned int botL = ((beginning + j) % (np * numMeridians));
+			indicesHolder.push_back(botL);
+			indicesHolder.push_back(botR);
+		}
+	}
+
+	for (int i = 0; i < indicesHolder.size(); i++) {
+		indices[i] = indicesHolder[i];
+	}
+
+
+	return indices;
 }

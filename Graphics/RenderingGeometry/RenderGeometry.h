@@ -10,6 +10,7 @@
 #include<glm\gtc\matrix_transform.hpp>
 #include<glm\gtx\transform.hpp>
 #include<fstream>
+#include <vector>
 #include "Application.h"
 #include "FlyCamera.h"
 
@@ -70,6 +71,9 @@ private:
 	unsigned int m_fragmentShader;
 	unsigned int m_projectionViewUniform;
 
+	//Global variable to set total verts of Sphere
+	int indicesCounter;
+	std::vector<unsigned int> indicesHolder;
 
 	bool GLInitWindow();
 	bool GenerateCubeBuffers(const int &width, const int &height);
@@ -88,6 +92,7 @@ private:
 	void DrawTriangle();
 	void DrawSphere();
 	Vertex* DrawHalfCircle(const int &np, const int &radius);
-
+	Vertex* generateSphereVertices(const unsigned int &sides, const unsigned int &mirid, Vertex* &halfSphere);
+	unsigned int* generateSphereIndicies(const unsigned int &vertices, const unsigned int &mirid);
 };
 #endif
