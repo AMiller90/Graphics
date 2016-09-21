@@ -74,16 +74,16 @@ void RenderGeometry::Draw()
 	//printf("m_time: %f \n", m_time);
 	
 	//Triangle
-	//DrawTriangle();
+	DrawTriangle();
 
 	//Plane
-	//DrawPlane();
+	DrawPlane();
 
 	//Cube
-	//DrawCube();
+	DrawCube();
 
 	//Circle
-	//DrawCircle(true);
+	DrawCircle(false);
 
 	//Sphere
 	DrawSphere();
