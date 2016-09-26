@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CameraAndProjections", "Cam
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RenderingGeometry", "RenderingGeometry\RenderingGeometry.vcxproj", "{224BD34A-E7A2-4D26-B57D-FA61BBE68AF5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Textures", "Textures\Textures.vcxproj", "{425A8BDA-36DA-4900-98EC-A68A1615899C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{224BD34A-E7A2-4D26-B57D-FA61BBE68AF5}.Release|x64.Build.0 = Release|x64
 		{224BD34A-E7A2-4D26-B57D-FA61BBE68AF5}.Release|x86.ActiveCfg = Release|Win32
 		{224BD34A-E7A2-4D26-B57D-FA61BBE68AF5}.Release|x86.Build.0 = Release|Win32
+		{425A8BDA-36DA-4900-98EC-A68A1615899C}.Debug|x64.ActiveCfg = Debug|x64
+		{425A8BDA-36DA-4900-98EC-A68A1615899C}.Debug|x64.Build.0 = Debug|x64
+		{425A8BDA-36DA-4900-98EC-A68A1615899C}.Debug|x86.ActiveCfg = Debug|Win32
+		{425A8BDA-36DA-4900-98EC-A68A1615899C}.Debug|x86.Build.0 = Debug|Win32
+		{425A8BDA-36DA-4900-98EC-A68A1615899C}.Release|x64.ActiveCfg = Release|x64
+		{425A8BDA-36DA-4900-98EC-A68A1615899C}.Release|x64.Build.0 = Release|x64
+		{425A8BDA-36DA-4900-98EC-A68A1615899C}.Release|x86.ActiveCfg = Release|Win32
+		{425A8BDA-36DA-4900-98EC-A68A1615899C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
