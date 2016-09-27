@@ -1,0 +1,9 @@
+#version 410
+in vec2 vNormal;
+uniform sampler2D diffuse;
+out vec4 FragColor;
+void main() {
+
+vec4 crate = texture(diffuse,vNormal);
+FragColor = crate;
+};

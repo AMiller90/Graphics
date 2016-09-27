@@ -124,9 +124,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\deps\gizmos\Gizmos.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="SolarSystem.cpp" />
     <ClCompile Include="..\src\gl_core_4_4.c" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\SolarSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\deps\gizmos\Gizmos.h" />

@@ -123,15 +123,15 @@
   <ItemGroup>
     <ClCompile Include="..\deps\gizmos\Gizmos.cpp" />
     <ClCompile Include="..\src\gl_core_4_4.c" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="FlyCamera.cpp" />
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\FlyCamera.cpp" />
+    <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\deps\gizmos\Gizmos.h" />
     <ClInclude Include="..\src\gl_core_4_4.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="FlyCamera.h" />
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\FlyCamera.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,24 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include=".\src\Textures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Textures.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FlyCamera.cpp">
+    <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\gl_core_4_4.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\FlyCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Textures.h">
+    <ClInclude Include="..\src\gl_core_4_4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Textures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\FlyCamera.h">
@@ -41,15 +44,18 @@
     <ClInclude Include="..\src\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\gl_core_4_4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Shaders\vertexTexture.txt">
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="Shaders\fragTexture.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Shaders\FBXfrag.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Shaders\FBXvert.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

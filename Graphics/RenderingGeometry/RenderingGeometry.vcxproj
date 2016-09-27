@@ -122,17 +122,15 @@
   <ItemGroup>
     <ClCompile Include="..\src\Camera.cpp" />
     <ClCompile Include="..\src\FlyCamera.cpp" />
-    <ClCompile Include="..\deps\gizmos\Gizmos.cpp" />
     <ClCompile Include="..\src\gl_core_4_4.c" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="RenderGeometry.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\RenderGeometry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Camera.h" />
     <ClInclude Include="..\src\FlyCamera.h" />
-    <ClInclude Include="..\deps\gizmos\Gizmos.h" />
     <ClInclude Include="..\src\gl_core_4_4.h" />
-    <ClInclude Include="RenderGeometry.h" />
+    <ClInclude Include="src\RenderGeometry.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Shaders\fragShader.txt" />
