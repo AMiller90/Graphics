@@ -28,10 +28,10 @@ Textures::Textures()
 ///</summary>
 bool Textures::startUp()
 {
-	////Load fbx
-	//m_fbx = new FBXFile();
-	//m_fbx->load("./FBXModels/stanford/Dragon.fbx");
-	//createOpenGLBuffers(m_fbx);
+	//Load fbx
+	m_fbx = new FBXFile();
+	m_fbx->load("./FBXModels/stanford/Dragon.fbx");
+	createOpenGLBuffers(m_fbx);
 
 	int imageWidth = 0, imageHeight = 0, imageFormat = 0;
 	//"./data/textures/crate.png"
@@ -105,8 +105,7 @@ void Textures::Draw()
 
 	//// bind the camera
 	int loc = glGetUniformLocation(m_programID, "ProjectionView");
-	glUniformMatrix4fv(loc, 1, GL_FALSE,
-		&(myCamera->getProjectionView()[0][0]));
+	glUniformMatrix4fv(loc, 1, GL_FALSE, &(myCamera->getProjectionView()[0][0]));
 
 	// set texture slot
 	glActiveTexture(GL_TEXTURE0);
@@ -128,15 +127,8 @@ void Textures::Draw()
 	loc = glGetUniformLocation(m_programID, "LightDir");
 	glUniform3f(loc, light.x, light.y, light.z);
 
-	//// bind our vertex array object and draw the mesh
-	////for Fbx
-	//for (unsigned int i = 0; i < m_fbx->getMeshCount(); ++i) {
-	//	FBXMeshNode* mesh = m_fbx->getMeshByIndex(i);
-	//	unsigned int* glData = (unsigned int*)mesh->m_userData;
-	//	glBindVertexArray(glData[0]);
-	//	glDrawElements(GL_TRIANGLES,
-	//		(unsigned int)mesh->m_indices.size(), GL_UNSIGNED_INT, 0);
-	//}
+
+	DrawFBX();
 
 	// draw
 	glBindVertexArray(m_vao);
@@ -154,7 +146,7 @@ void Textures::Draw()
 void Textures::Destroy()
 {
 	//Cleanup fbx
-	//cleanupOpenGLBuffers(m_fbx);
+	cleanupOpenGLBuffers(m_fbx);
 
 	// cleanup render data
 	glDeleteProgram(m_programID);
@@ -404,7 +396,7 @@ bool Textures::CreateDefaultShaderFiles()
 bool Textures::GeneratePlaneBuffers()
 {
 	////Textures without mapping
-	//float vertexData[] = {
+	//float fbxVerts[] = {
 	//	-5, 0, 5, 1, 0, 1,
 	//	5, 0, 5, 1, 1, 1,
 	//	5, 0, -5, 1, 1, 0,
@@ -457,5 +449,22 @@ bool Textures::GeneratePlaneBuffers()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	return true;
+}
+
+///<summary>
+///Function that draws the loaded GBX model
+///</summary>
+bool Textures::DrawFBX()
+{
+	// bind our vertex array object and draw the mesh
+	//for Fbx
+	for (unsigned int i = 0; i < m_fbx->getMeshCount(); ++i) {
+		FBXMeshNode* mesh = m_fbx->getMeshByIndex(i);
+		unsigned int* glData = (unsigned int*)mesh->m_userData;
+		glBindVertexArray(glData[0]);
+		glDrawElements(GL_TRIANGLES,
+			(unsigned int)mesh->m_indices.size(), GL_UNSIGNED_INT, 0);
+	}
 	return true;
 }

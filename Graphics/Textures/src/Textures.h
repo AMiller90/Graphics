@@ -49,6 +49,6 @@ private:
 	std::string ReadShaderFromFile(const std::string &a_File);
 	bool CreateDefaultShaderFiles();
 	bool GeneratePlaneBuffers();
-
+	bool DrawFBX();
 };
 #endif
