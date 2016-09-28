@@ -46,12 +46,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Shaders\vertexTexture.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Shaders\fragTexture.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="Shaders\FBXfrag.txt">
       <Filter>Resource Files</Filter>
     </Text>

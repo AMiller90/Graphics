@@ -4,6 +4,6 @@ uniform sampler2D diffuse;
 out vec4 FragColor;
 void main() {
 
-vec4 crate = texture(diffuse,vNormal);
-FragColor = crate;
+vec4 FBXTexture = texture(diffuse,vNormal);
+FragColor = FBXTexture;
 };

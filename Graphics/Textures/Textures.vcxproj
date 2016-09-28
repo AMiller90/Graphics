@@ -140,8 +140,6 @@
   <ItemGroup>
     <Text Include="Shaders\FBXfrag.txt" />
     <Text Include="Shaders\FBXvert.txt" />
-    <Text Include="Shaders\fragTexture.txt" />
-    <Text Include="Shaders\vertexTexture.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
