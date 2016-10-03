@@ -69,13 +69,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(SolutionDir)deps\glfw\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
-    <IncludePath>C:\Users\chuwi\Documents\GitHub\Graphics\Graphics\src;$(SolutionDir)src;$(SolutionDir)deps\;$(SolutionDir)deps\glfw\include;$(SolutionDir)deps\stb-master;$(SolutionDir)deps\imgui;$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\glfw\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)deps\antTweakBar\lib</LibraryPath>
+    <IncludePath>C:\Users\chuwi\Documents\GitHub\Graphics\Graphics\src;$(SolutionDir)src;$(SolutionDir)deps\;$(SolutionDir)deps\glfw\include;$(SolutionDir)deps\stb-master;$(SolutionDir)deps\imgui;$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath);$(SolutionDir)deps\gui;$(SolutionDir)deps\antTweakBar\include</IncludePath>
     <SourcePath>$(VC_SourcePath);$(SolutionDir)src;</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Users\chuwi\Documents\GitHub\Graphics\Graphics\src;$(SolutionDir)src;$(SolutionDir)deps\;$(SolutionDir)deps\glfw\include;$(SolutionDir)deps\stb-master;$(SolutionDir)deps\imgui;$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)deps\glfw\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <IncludePath>C:\Users\chuwi\DocumeC:\Users\chuwi\Documents\GitHub\Graphics\Graphics\src;$(SolutionDir)src;$(SolutionDir)deps\;$(SolutionDir)deps\glfw\include;$(SolutionDir)deps\stb-master;$(SolutionDir)deps\imgui;$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath);$(SolutionDir)deps\gui;$(SolutionDir)deps\antTweakBar\includents\GC:\Users\chuwi\Documents\GitHub\Graphics\Graphics\src;$(SolutionDir)src;$(SolutionDir)deps\;$(SolutionDir)deps\glfw\include;$(SolutionDir)deps\stb-master;$(SolutionDir)deps\imgui;$(VC_IncludePath);$(ProjectDir);$(WindowsSDK_IncludePath);$(SolutionDir)deps\gui;$(SolutionDir)deps\antTweakBar</IncludePath>
+    <LibraryPath>$(SolutionDir)deps\glfw\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(SolutionDir)deps\antTweakBar\lib</LibraryPath>
     <SourcePath>$(VC_SourcePath);$(SolutionDir)src;</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -89,7 +89,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AntTweakBar.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -113,7 +113,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>AntTweakBar.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,14 +131,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\deps\gizmos\Gizmos.cpp" />
+    <ClCompile Include="..\deps\gui\imgui.cpp" />
+    <ClCompile Include="..\deps\gui\imgui_draw.cpp" />
+    <ClCompile Include="..\deps\gui\imgui_impl_glfw_gl3.cpp" />
     <ClCompile Include="..\src\gl_core_4_4.c" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\SolarSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\deps\gizmos\Gizmos.h" />
-    <ClInclude Include="SolarSystem.h" />
+    <ClInclude Include="..\deps\gui\imgui_impl_glfw_gl3.h" />
     <ClInclude Include="..\src\gl_core_4_4.h" />
+    <ClInclude Include="src\SolarSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
