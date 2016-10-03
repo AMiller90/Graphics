@@ -46,7 +46,7 @@ private:
 	unsigned int m_texture;
 	unsigned int m_grass;
 	unsigned int m_rocks;
-	unsigned int m_snow;
+	unsigned int m_gravel;
 
 	int m_indexCount;
 	unsigned int m_programID;
@@ -63,5 +63,7 @@ private:
 	bool CreateDefaultShaderFiles();
 
 	void DrawPlane();
+	float* Perlin(const int &dims);
+
 };
 #endif

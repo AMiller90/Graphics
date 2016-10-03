@@ -6,14 +6,26 @@ out vec4 fragColor;
 uniform sampler2D perlin_texture;
 uniform sampler2D grass;
 uniform sampler2D rocks;
-uniform sampler2D snow;
+uniform sampler2D gravel;
+
+vec4 blend(vec4 a, vec4 b, vec4 c);
 
 void main() 
 {  
+
 	vec4 R = texture(rocks,vTexcoords);
 	vec4 G = texture(grass,vTexcoords);
-	vec4 S = texture(snow,vTexcoords);
+	vec4 S = texture(gravel,vTexcoords);
 
-	fragColor = texture(perlin_texture,vTexcoords).rrrr;
-	fragColor.a = 1;
+	fragColor = blend(R,G,S);
+};
+
+vec4 blend(vec4 a, vec4 b, vec4 c)
+{
+
+	vec4 RG = mix(a,b,texture(perlin_texture,vTexcoords).r);
+	vec4 GS = mix(c,b,texture(perlin_texture,vTexcoords).r);
+	vec4 RS = mix(a,c,texture(perlin_texture,vTexcoords).r);
+
+	return RG + GS + RS;
 };

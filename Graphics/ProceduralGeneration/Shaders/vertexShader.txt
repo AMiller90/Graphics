@@ -5,13 +5,16 @@ layout(location=1) in vec2 texcoords;
 out vec2 vTexcoords;
 
 uniform mat4 projectionViewWorldMatrix;
+uniform float Time;
 
 uniform sampler2D perlin_texture;
 
 void main() 
 {
-	vec4 pos = position;
-	pos.y += texture(perlin_texture, texcoords).r * 5;
+	vec4 pos = position; 
+
+	pos.y += texture(perlin_texture, texcoords).r * 5;
+
 	vTexcoords = texcoords;
 	gl_Position = projectionViewWorldMatrix * pos;
 };

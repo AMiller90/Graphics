@@ -26,29 +26,11 @@ ProceduralGeneration::ProceduralGeneration()
 bool ProceduralGeneration::startUp()
 {
 	int dims = 25;
-	float *perlin_data = new float[dims * dims];
-	float scale = (1.0f / dims) * 3;
-	int octaves = 6;
 
-	for (int x = 0; x < dims; ++x)
-	{
-		for (int y = 0; y < dims; ++y)
-		{
-			float amplitude = 1.f;
-			float persistence = 0.3f;
-			perlin_data[y * dims + x] = 0;
-			for (int o = 0; o < octaves; ++o)
-			{
-				float freq = powf(2, (float)o);
-				float perlin_sample =
-					glm::perlin(vec2((float)x, (float)y) * scale * freq) * 0.5f + 0.5f;
-				perlin_data[y * dims + x] += perlin_sample * amplitude;
-				amplitude *= persistence;
-			}
-		}
-	}
+	float *perlin_data = Perlin(25);
 
 	int imageWidth = dims, imageHeight = dims, imageFormat = 0;
+
 	//perlin
 	glGenTextures(1, &m_texture);
 	glBindTexture(GL_TEXTURE_2D, m_texture);
@@ -74,11 +56,11 @@ bool ProceduralGeneration::startUp()
 
 	stbi_image_free(data);
 
-	//snow
+	//gravel
 	data = stbi_load("./data/textures/gravel.tga",
 		&imageWidth, &imageHeight, &imageFormat, STBI_default);
-	glGenTextures(1, &m_snow);
-	glBindTexture(GL_TEXTURE_2D, m_snow);
+	glGenTextures(1, &m_gravel);
+	glBindTexture(GL_TEXTURE_2D, m_gravel);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight,
 		0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -87,7 +69,7 @@ bool ProceduralGeneration::startUp()
 	stbi_image_free(data);
 
 	//grass
-	data = stbi_load("./data/textures/grass.tga",
+	data = stbi_load("./data/textures/dirt_grass.tga",
 		&imageWidth, &imageHeight, &imageFormat, STBI_default);
 	glGenTextures(1, &m_grass);
 	glBindTexture(GL_TEXTURE_2D, m_grass);
@@ -142,7 +124,6 @@ void ProceduralGeneration::Draw()
 
 	// where to send the matrix
 	m_projectionViewUniform = glGetUniformLocation(m_programID, "projectionViewWorldMatrix");
-
 
 	//Plane
 	DrawPlane();
@@ -202,7 +183,6 @@ bool ProceduralGeneration::GLInitWindow()
 	myCamera->setPerspective(glm::pi<float>() * 0.35f, 16 / 9.f, 0.1f, 1000.f);
 
 	//Set matrix
-	//m_projectionViewMatrix = projection * view;
 	m_projectionViewMatrix = myCamera->getProjection() * myCamera->getView();
 
 	return true;
@@ -217,21 +197,6 @@ bool ProceduralGeneration::GLInitWindow()
 ///</summary>
 bool ProceduralGeneration::GeneratePlaneBuffers(const int & width, const int & height)
 {
-	//// create vertex and index data
-	//Vertex vertices[4];
-	//unsigned int indices[4] = { 0,1,2,3 };
-
-	////Set the positions
-	//vertices[0].position = vec4(-width, 0, -height, 1);
-	//vertices[1].position = vec4(width, 0, -height, 1);
-	//vertices[2].position = vec4(-width, 0, height, 1);
-	//vertices[3].position = vec4(width, 0, height, 1);
-
-
-	//vertices[0].UV = vec2(0.0f, 0.0f);
-	//vertices[1].UV = vec2(1.0f, 0.0f);
-	//vertices[2].UV = vec2(0.0f, 1.0f);
-	//vertices[3].UV = vec2(1.0f, 1.0f);
 
 	 //create opengl data for a grid
 		Vertex* vertices = new Vertex[width * height];
@@ -289,14 +254,6 @@ bool ProceduralGeneration::GeneratePlaneBuffers(const int & width, const int & h
 	//Set the buffer data for the indices
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indexCount *
 		sizeof(unsigned int), indices, GL_STATIC_DRAW);
-
-	////Set the buffer data for the vertices
-	//glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex),
-	//	vertices, GL_STATIC_DRAW);
-	//
-	////Set the buffer data for the indices
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 *
-	//	sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
 	// position
 	glEnableVertexAttribArray(0);
@@ -449,6 +406,7 @@ bool ProceduralGeneration::CreateDefaultShaderFiles()
 void ProceduralGeneration::DrawPlane()
 {
 	glUniformMatrix4fv(m_projectionViewUniform, 1, false, glm::value_ptr(m_projectionViewMatrix));
+
 	// set texture slot
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_texture);
@@ -459,7 +417,7 @@ void ProceduralGeneration::DrawPlane()
 
 	// set texture slot
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, m_snow);
+	glBindTexture(GL_TEXTURE_2D, m_gravel);
 
 	// set texture slot
 	glActiveTexture(GL_TEXTURE3);
@@ -474,7 +432,7 @@ void ProceduralGeneration::DrawPlane()
 	glUniform1i(m_projectionViewUniform, 1);
 
 	// tell the shader where it is
-	m_projectionViewUniform = glGetUniformLocation(m_programID, "snow");
+	m_projectionViewUniform = glGetUniformLocation(m_programID, "gravel");
 	glUniform1i(m_projectionViewUniform, 2);
 
 	// tell the shader where it is
@@ -485,6 +443,38 @@ void ProceduralGeneration::DrawPlane()
 	glBindVertexArray(m_planeVAO);
 	glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+}
+
+///<summary>
+///Function that uses perlin functionality
+///<para></para>
+///<remarks><paramref name=" dims"></paramref> -The dimensions of the plane</remarks>
+///</summary>
+float* ProceduralGeneration::Perlin(const int &dims)
+{
+	float *perlin_data = new float[dims * dims];
+	float scale = (1.0f / dims) * 3;
+	int octaves = 6;
+
+	for (int x = 0; x < dims; ++x)
+	{
+		for (int y = 0; y < dims; ++y)
+		{
+			float amplitude = 1.f;
+			float persistence = 0.3f;
+			perlin_data[y * dims + x] = 0;
+			for (int o = 0; o < octaves; ++o)
+			{
+				float freq = powf(2, (float)o);
+				float perlin_sample =
+					glm::perlin(vec2((float)x, (float)y) * scale * freq) * 0.5f + 0.5f;
+				perlin_data[y * dims + x] += perlin_sample * amplitude;
+				amplitude *= persistence;
+			}
+		}
+	}
+
+	return perlin_data;
 }
 
 
